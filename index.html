@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sport Direct Football Finder</title>
+
+
+<style>
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6fa;
+    color: #111;
+}
+
+
+/* =====================================================
+   COLOURS
+===================================================== */
+
+:root {
+    --blue: #001e62;
+    --blue-light: #eaf0ff;
+    --red: #e53935;
+    --yellow: #ffc400;
+    --dark: #111111;
+    --grey: #666666;
+    --white: #ffffff;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header {
+    background: var(--blue);
+    color: white;
+    padding: 17px 25px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 100;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
+.header-text {
+    font-size: 13px;
+    opacity: 0.95;
+}
+
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.page {
+    display: none;
+
+    min-height: calc(100vh - 65px);
+
+    padding: 35px 20px 50px;
+}
+
+.page.active {
+    display: block;
+}
+
+.container {
+    max-width: 1150px;
+    margin: auto;
+}
+
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.title {
+    text-align: center;
+
+    font-size: 32px;
+
+    color: var(--blue);
+
+    margin-bottom: 10px;
+
+    line-height: 1.25;
+}
+
+.subtitle {
+    text-align: center;
+
+    color: var(--grey);
+
+    line-height: 1.6;
+
+    margin-bottom: 28px;
+}
+
+.title::after {
+    content: "";
+
+    display: block;
+
+    width: 75px;
+
+    height: 5px;
+
+    margin: 13px auto 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            to right,
+            var(--blue) 33%,
+            var(--yellow) 33%,
+            var(--yellow) 66%,
+            var(--red) 66%
+        );
+}
+
+
+/* =====================================================
+   MAP CARD
+===================================================== */
+
+.map-card {
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 6px 25px rgba(0,0,0,0.10);
+
+    border-top: 6px solid var(--blue);
+}
+
+
+/* =====================================================
+   MAP
+   IMAGE MADE SLIGHTLY SMALLER
+===================================================== */
+
+.map-wrapper {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    border: 2px solid #d5d9e0;
+
+    background: #eeeeee;
+}
+
+.store-map {
+
+    display: block;
+
+    width: 100%;
+
+    max-width: 700px;
+
+    height: auto;
+
+    margin: 0 auto;
+}
+
+
+/* =====================================================
+   MAP INFORMATION
+===================================================== */
+
+.map-information {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+.info-card {
+
+    padding: 17px;
+
+    border-radius: 11px;
+
+    background: #f8f9fb;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border: 1px solid #e1e4e9;
+}
+
+.info-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 5px;
+
+    height: 100%;
+
+    background: var(--blue);
+}
+
+.info-card:nth-child(2)::before {
+
+    background: var(--yellow);
+}
+
+.info-card:nth-child(3)::before {
+
+    background: var(--red);
+}
+
+.info-card h3 {
+
+    color: var(--blue);
+
+    font-size: 15px;
+
+    margin-bottom: 7px;
+}
+
+.info-card p {
+
+    color: var(--grey);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   LEGEND
+===================================================== */
+
+.legend {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+
+    margin-top: 18px;
+
+    font-size: 13px;
+
+    color: #555;
+}
+
+.legend-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.legend-route {
+
+    width: 30px;
+
+    height: 5px;
+
+    background: var(--red);
+
+    border-radius: 5px;
+}
+
+.legend-entrance {
+
+    width: 16px;
+
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: var(--blue);
+}
+
+.legend-football {
+
+    width: 16px;
+
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: var(--red);
+}
+
+.legend-section {
+
+    width: 16px;
+
+    height: 16px;
+
+    border-radius: 4px;
+
+    background: var(--yellow);
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.button-area {
+
+    text-align: center;
+
+    margin-top: 26px;
+}
+
+.btn {
+
+    padding: 14px 32px;
+
+    background: var(--blue);
+
+    color: white;
+
+    border: none;
+
+    border-radius: 7px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+.btn:hover {
+
+    transform: translateY(-2px);
+
+    background: #003b9b;
+}
+
+.back-btn {
+
+    background: #555;
+}
+
+.back-btn:hover {
+
+    background: #333;
+}
+
+
+/* =====================================================
+   WELCOME PAGE
+===================================================== */
+
+.welcome-box {
+
+    max-width: 800px;
+
+    margin: 35px auto 0;
+
+    background: white;
+
+    padding: 45px 30px;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow:
+        0 5px 22px rgba(0,0,0,0.09);
+
+    border-top: 6px solid var(--yellow);
+}
+
+.welcome-box .category-icon {
+
+    font-size: 65px;
+
+    margin-bottom: 15px;
+}
+
+.welcome-box h2 {
+
+    color: var(--blue);
+
+    font-size: 27px;
+
+    margin-bottom: 15px;
+}
+
+.welcome-box p {
+
+    color: #555;
+
+    line-height: 1.8;
+
+    max-width: 650px;
+
+    margin: auto;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   PRODUCT CATEGORY PAGE
+===================================================== */
+
+.category-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 22px;
+
+    max-width: 950px;
+
+    margin: 40px auto 0;
+}
+
+.category-card {
+
+    background: white;
+
+    padding: 35px 20px;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    box-shadow:
+        0 4px 16px rgba(0,0,0,0.09);
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+    border-top: 5px solid var(--blue);
+}
+
+.category-card:nth-child(2) {
+
+    border-top-color: var(--yellow);
+}
+
+.category-card:nth-child(3) {
+
+    border-top-color: var(--red);
+}
+
+.category-card:hover {
+
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 9px 25px rgba(0,0,0,0.15);
+}
+
+.category-icon {
+
+    font-size: 52px;
+
+    margin-bottom: 17px;
+}
+
+.category-card h3 {
+
+    color: var(--blue);
+
+    margin-bottom: 9px;
+}
+
+.category-card p {
+
+    color: #666;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   PRODUCT GRID
+===================================================== */
+
+.product-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+
+    max-width: 1000px;
+
+    margin: 35px auto 0;
+}
+
+.product-card {
+
+    background: white;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 3px 15px rgba(0,0,0,0.09);
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+    border-bottom: 4px solid var(--blue);
+}
+
+.product-card:nth-child(2) {
+
+    border-bottom-color: var(--yellow);
+}
+
+.product-card:nth-child(3) {
+
+    border-bottom-color: var(--red);
+}
+
+.product-card:nth-child(4) {
+
+    border-bottom-color: var(--yellow);
+}
+
+.product-card:nth-child(5) {
+
+    border-bottom-color: var(--blue);
+}
+
+.product-card:nth-child(6) {
+
+    border-bottom-color: var(--red);
+}
+
+.product-card:hover {
+
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,0.14);
+}
+
+
+/* =====================================================
+   PRODUCT IMAGE
+   IMAGE NOW FILLS THE WHOLE BOX
+===================================================== */
+
+.product-image {
+
+    height: 260px;
+
+    width: 100%;
+
+    background: #f0f1f3;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    overflow: hidden;
+}
+
+.product-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+
+    transform: scale(1.04);
+}
+
+
+.product-info {
+
+    padding: 18px;
+}
+
+.product-type {
+
+    color: #888;
+
+    font-size: 13px;
+}
+
+.product-info h3 {
+
+    color: var(--blue);
+
+    margin: 5px 0 8px;
+}
+
+.product-info p {
+
+    color: #666;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.product-price {
+
+    font-weight: bold !important;
+
+    margin-top: 10px;
+
+    color: #111 !important;
+
+    font-size: 15px !important;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal {
+
+    display: none;
+
+    position: fixed;
+
+    z-index: 999;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.65);
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+}
+
+.modal-content {
+
+    background: white;
+
+    width: 100%;
+
+    max-width: 520px;
+
+    padding: 28px;
+
+    border-radius: 15px;
+
+    position: relative;
+}
+
+.close {
+
+    position: absolute;
+
+    right: 18px;
+
+    top: 10px;
+
+    font-size: 30px;
+
+    cursor: pointer;
+}
+
+.modal-image {
+
+    height: 220px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 15px;
+}
+
+.modal-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+}
+
+.modal-content h2 {
+
+    color: var(--blue);
+
+    margin-bottom: 7px;
+}
+
+.modal-category {
+
+    color: #888;
+
+    margin-bottom: 18px;
+}
+
+.modal-description {
+
+    color: #555;
+
+    line-height: 1.6;
+
+    margin-bottom: 16px;
+}
+
+.modal-location {
+
+    background: var(--blue-light);
+
+    color: var(--blue);
+
+    padding: 13px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+
+    background: var(--blue);
+
+    color: white;
+
+    text-align: center;
+
+    padding: 18px;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:768px) {
+
+    .title {
+
+        font-size: 25px;
+    }
+
+    .header-text {
+
+        display: none;
+    }
+
+    .map-information {
+
+        grid-template-columns: 1fr;
+    }
+
+    .category-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .product-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-box {
+
+        padding: 35px 20px;
+    }
+
+    .map-wrapper {
+
+        max-width: 100%;
+    }
+
+    .store-map {
+
+        max-width: 100%;
+    }
+
+}
+
+
+/* =====================================================
+   SMALL PHONE
+===================================================== */
+
+@media(max-width:450px) {
+
+    .title {
+
+        font-size: 22px;
+    }
+
+    .btn {
+
+        width: 90%;
+
+        max-width: 300px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="logo">
+
+        SPORT FINDER
+
+    </div>
+
+
+    <div class="header-text">
+
+        In-Store Football Product Navigation
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     PAGE 1
+     STORE MAP
+===================================================== -->
+
+<section
+    id="mapPage"
+    class="page active"
+>
+
+<div class="container">
+
+
+    <h1 class="title">
+
+        Find the Football Section at Central I-City outlet
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        View the store layout to locate the Football Section.
+
+    </p>
+
+
+
+    <div class="map-card">
+
+
+        <!-- =================================================
+             ORIGINAL STORE MAP
+        ================================================== -->
+
+        <div class="map-wrapper">
+
+            <img
+                src="assets/store-layout.jpg"
+                class="store-map"
+                alt="Sport Direct Central I-City Store Layout"
+            >
+
+        </div>
+
+
+
+        <!-- =================================================
+             MAP INFORMATION
+        ================================================== -->
+
+        <div class="map-information">
+
+
+            <div class="info-card">
+
+                <h3>
+
+                    📍 STORE MAP
+
+                </h3>
+
+
+                <p>
+
+                    View the original store layout
+                    to identify the different areas
+                    inside Sport Direct Central I-City.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <h3>
+
+                    ⚽ FOOTBALL SECTION
+
+                </h3>
+
+
+                <p>
+
+                    Locate the Football Section
+                    using the store layout shown above.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <h3>
+
+                    🛍️ EXPLORE PRODUCTS
+
+                </h3>
+
+
+                <p>
+
+                    Continue to the Football Section
+                    page to explore available products.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             NEXT BUTTON
+        ================================================== -->
+
+        <div class="button-area">
+
+
+            <button
+                class="btn"
+                onclick="showPage('categoryPage')"
+            >
+
+                NEXT →
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PAGE 2
+     WELCOME TO FOOTBALL SECTION
+===================================================== -->
+
+<section
+    id="categoryPage"
+    class="page"
+>
+
+<div class="container">
+
+
+    <h1 class="title">
+
+        Welcome to Football Section
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        Find the right gear for your game.
+
+    </p>
+
+
+
+    <!-- =================================================
+         WELCOME BOX
+    ================================================== -->
+
+    <div class="welcome-box">
+
+
+        <div class="category-icon">
+
+            ⚽
+
+        </div>
+
+
+        <h2>
+
+            Football Section
+
+        </h2>
+
+
+        <p>
+
+            Welcome to the Football Section at
+            Sport Direct Central I-City.
+
+            Explore a range of football boots,
+            equipment and apparel designed
+            for your game.
+
+        </p>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         EXPLORE PRODUCTS
+    ================================================== -->
+
+    <div class="button-area">
+
+
+        <button
+            class="btn"
+            onclick="showPage('productPage')"
+        >
+
+            EXPLORE PRODUCTS →
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         BACK TO MAP
+    ================================================== -->
+
+    <div class="button-area">
+
+
+        <button
+            class="btn back-btn"
+            onclick="showPage('mapPage')"
+        >
+
+            ← BACK TO MAP
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PAGE 3
+     PRODUCT CATEGORIES
+===================================================== -->
+
+<section
+    id="productPage"
+    class="page"
+>
+
+<div class="container">
+
+
+    <h1 class="title">
+
+        Explore Football Products
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        Choose a category to explore the products
+        available in the Football Section.
+
+    </p>
+
+
+
+    <!-- =================================================
+         PRODUCT CATEGORY CARDS
+    ================================================== -->
+
+    <div class="category-grid">
+
+
+        <!-- FOOTBALL BOOTS -->
+
+        <div
+            class="category-card"
+            onclick="showProducts('boots')"
+        >
+
+
+            <div class="category-icon">
+
+                👟
+
+            </div>
+
+
+            <h3>
+
+                Football Boots
+
+            </h3>
+
+
+            <p>
+
+                Explore football boots suitable
+                for different playing styles.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- FOOTBALL EQUIPMENT -->
+
+        <div
+            class="category-card"
+            onclick="showProducts('equipment')"
+        >
+
+
+            <div class="category-icon">
+
+                ⚽
+
+            </div>
+
+
+            <h3>
+
+                Football Equipment
+
+            </h3>
+
+
+            <p>
+
+                Find footballs, shin guards,
+                goalkeeper gloves and socks.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- FOOTBALL APPAREL -->
+
+        <div
+            class="category-card"
+            onclick="showProducts('apparel')"
+        >
+
+
+            <div class="category-icon">
+
+                👕
+
+            </div>
+
+
+            <h3>
+
+                Football Apparel
+
+            </h3>
+
+
+            <p>
+
+                Browse jerseys, shorts,
+                tights and training wear.
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- BACK TO WELCOME PAGE -->
+
+    <div class="button-area">
+
+
+        <button
+            class="btn back-btn"
+            onclick="showPage('categoryPage')"
+        >
+
+            ← BACK
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PRODUCT LIST PAGE
+===================================================== -->
+
+<section
+    id="productListPage"
+    class="page"
+>
+
+<div class="container">
+
+
+    <h1
+        class="title"
+        id="productTitle"
+    >
+
+        Football Products
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        Select a product to view more information.
+
+    </p>
+
+
+
+    <!-- PRODUCTS -->
+
+    <div
+        id="productGrid"
+        class="product-grid"
+    >
+
+    </div>
+
+
+
+    <!-- BACK TO PRODUCT CATEGORIES -->
+
+    <div class="button-area">
+
+
+        <button
+            class="btn back-btn"
+            onclick="showPage('productPage')"
+        >
+
+            ← BACK TO PRODUCTS
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PRODUCT DETAILS MODAL
+===================================================== -->
+
+<div
+    id="productModal"
+    class="modal"
+>
+
+
+    <div class="modal-content">
+
+
+        <span
+            class="close"
+            onclick="closeModal()"
+        >
+
+            ×
+
+        </span>
+
+
+
+        <div class="modal-image">
+
+
+            <img
+                id="modalImage"
+                src=""
+                alt="Product"
+            >
+
+
+        </div>
+
+
+
+        <h2
+            id="modalName"
+        >
+
+        </h2>
+
+
+
+        <p
+            id="modalCategory"
+            class="modal-category"
+        >
+
+        </p>
+
+
+
+        <p
+            id="modalDescription"
+            class="modal-description"
+        >
+
+        </p>
+
+
+
+        <p
+            id="modalPrice"
+            class="product-price"
+        >
+
+        </p>
+
+
+
+        <div class="modal-location">
+
+            📍 Location:
+            Football Section
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    Sport Direct Football Finder © 2026
+
+</footer>
+
+
+
+<script>
+
+
+/* =====================================================
+   PRODUCT DATABASE
+===================================================== */
+
+const products = {
+
+
+    /* =================================================
+       FOOTBALL BOOTS
+       TOTAL: 6
+    ================================================= */
+
+    boots: [
+
+        {
+            name: "Adidas Predator Elite Firm Ground",
+
+            image: "images/kasut1.jpg",
+
+            category: "Football Boots",
+
+            description: "Lightweight boots with Primeknit material for comfort, versatility and a dynamic fit. Durable.Regular fit.Synthetic upper.",
+
+            price: "RM 769.00"
+        },
+
+
+        {
+            name: "Nike Phantom 6 Academy Firm Ground",
+
+            image: "images/kasut2.jpg",
+
+            category: "Football Boots",
+
+            description: "Amplified touch: build for precision with a nikeskin touch zone, where you need for clean strikes. Natural fit.", price: "RM 409.00"
+        },
+
+
+        {
+            name: "Men's Future 9 Match Fg",
+            image: "images/kasut3.jpg",
+
+            category: "Football Boots",
+
+            description:"The upper gives a flexible, secure, and supportive fit thanks to its soft, lighweight base material, a stretchy knitted collar and a mid-cut construction made with 20% recycle materials.",
+			price: "RM 379.00"
+			},
+
+
+        {
+            name: "Joma Top Flex Indoor Boots",
+
+            image: "images/kasut4.jpg",
+
+            category: "Indoor Boots",
+
+            description:"Designed for player who demand top-tier performance and comfort on court. Durable rubber sole. Leather Upper.", price: "RM 209.00"
+        },
+
+
+        {
+            name: "Kelme Fuege Indoor Boots",
+
+            image: "images/kasut5.jpg",
+
+            category: "Indoor Boots",
+
+            description:"Synthetic upper engineered for durability and ball control. Lace-up fastenings ensure personalised fit.",
+            price: "RM 167.00"
+        },
+
+
+        {
+            name: "Blaze Junior Fg",
+
+            image: "images/kasut6.jpg",
+
+            category: "Football Boots",
+
+            description:"Entry Level shoes with knitted tongue and synthetic leather upper.",
+
+            price: "RM 100.00"
+        }
+
+    ],
+
+
+
+    /* =================================================
+       FOOTBALL EQUIPMENT
+    ================================================= */
+
+    equipment: [
+
+        {
+            name: "Football",
+
+            image: "images/bola.jpg",
+
+            category: "Football Equipment",
+
+            description:"Puma training sessions and matches ball.",
+
+            price: "RM 79"
+        },
+
+
+        {
+            name: "Goalkeeper Gloves",
+
+            image: "images/gloves.jpg",
+
+            category: "Football Equipment",
+
+            description:"Goalkeeper gloves designed to provide grip and support.",
+
+            price: "RM 99"
+        },
+
+
+        {
+            name: "Shin Guard",
+
+            image: "images/shinguard.jpg",
+
+            category: "Football Equipment",
+
+            description: "Lightweight shin guards designed for football activities and avoid injuries.",
+
+            price: "RM 49"
+        },
+
+
+        {
+            name: "Football Socks",
+
+            image: "images/socks.jpg",
+
+            category: "Football Equipment",
+
+            description: "Comfortable football socks suitable for training and matches.",
+
+            price: "RM 29"
+        }
+
+    ],
+
+
+
+    /* =================================================
+       FOOTBALL APPAREL
+       TOTAL: 6 PRODUCTS
+    ================================================= */
+
+    apparel: [
+
+        {
+            name: "Puma Malaysia FA Mens Away Kits",
+
+            image: "images/jersey.jpg",
+
+            category: "Puma Navy-Gray",
+
+            description: "Mesh and dryCELL tech help keep it easy and cool through intense matches or training sessions. Football pride up front, sharp details all round.",
+
+            price: "RM 319.00"
+        },
+
+
+        {
+            name: "Real Madrid Home Shirt 2026/2027 Mens",
+
+            image: "images/jersey2.jpg",
+
+            category: "White/Green",
+
+            description: "Replica shirt styled for Real Madrid fans. Crew neck for secure during active use and comfortable wear.",
+
+            price: "RM 329.00"
+        },
+
+
+        {
+            name: "PSG Away Shirt 2026/2027 Mens",
+
+            image: "images/jersey3.jpg",
+
+            category: "White/Navy",
+
+            description: "Feel part of the squad with a replica cut that comfortable for all day use.",
+
+            price: "RM 309.00"
+        },
+
+
+        {
+            name: "Sondico Core Tights Mens",
+
+            image: "images/tights.jpg",
+
+            category: "Black",
+
+            description:
+            "Powered by LYCRA® fibre for long-lasting comfort and freedom of movement, the Sondico Core Tights Mens are a go-to for gym training, outdoor runs, or team sports. Designed to support performance in every season, they deliver comfort, flexibility, and warmth, perfect for wearing alone or under shorts.",
+
+            price: "RM 89.00"
+        },
+
+
+        {
+            name: "Men's 3/4 Performance Tracksuit Bottoms",
+
+            image: "images/threequarter.jpg",
+
+            category: "Black/White",
+
+            description: " Made to move easily on the pitch, these bottoms offer a practical balance between coverage and mobility.",
+
+            price: "RM 129.00"
+        },
+
+
+        {
+            name: "Men's Football Shorts",
+
+            image: "images/shorts.jpg",
+
+            category: "Football Apparel",
+
+            description:"Nike's Men's Football Shorts keep you moving through training sessions and match play with a streamlined, athletic design.",
+
+            price: "RM 119.00"
+        }
+
+    ]
+
+};
+
+
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function showPage(pageId) {
+
+
+    const pages =
+        document.querySelectorAll(".page");
+
+
+    pages.forEach(function(page) {
+
+        page.classList.remove("active");
+
+    });
+
+
+    document
+        .getElementById(pageId)
+        .classList.add("active");
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+
+/* =====================================================
+   SHOW PRODUCTS
+===================================================== */
+
+function showProducts(category) {
+
+
+    showPage("productListPage");
+
+
+    let title = "";
+
+
+    if (category === "boots") {
+
+        title = "Football Boots";
+
+    }
+
+
+    else if (category === "equipment") {
+
+        title = "Football Equipment";
+
+    }
+
+
+    else if (category === "apparel") {
+
+        title = "Football Apparel";
+
+    }
+
+
+    document
+        .getElementById("productTitle")
+        .innerText = title;
+
+
+
+    const productGrid =
+        document.getElementById("productGrid");
+
+
+    productGrid.innerHTML = "";
+
+
+
+    products[category].forEach(function(product) {
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "product-card";
+
+
+        card.innerHTML = `
+
+            <div class="product-image">
+
+                <img
+                    src="${product.image}"
+                    alt="${product.name}"
+                >
+
+            </div>
+
+
+            <div class="product-info">
+
+                <p class="product-type">
+
+                    ${product.category}
+
+                </p>
+
+
+                <h3>
+
+                    ${product.name}
+
+                </h3>
+
+
+                <p>
+
+                    Click to view product details.
+
+                </p>
+
+
+                <p class="product-price">
+
+                    ${product.price}
+
+                </p>
+
+            </div>
+
+        `;
+
+
+        card.onclick = function() {
+
+            openProduct(product);
+
+        };
+
+
+        productGrid.appendChild(card);
+
+    });
+
+}
+
+
+
+/* =====================================================
+   OPEN PRODUCT MODAL
+===================================================== */
+
+function openProduct(product) {
+
+
+    document
+        .getElementById("modalImage")
+        .src = product.image;
+
+
+    document
+        .getElementById("modalImage")
+        .alt = product.name;
+
+
+    document
+        .getElementById("modalName")
+        .innerText = product.name;
+
+
+    document
+        .getElementById("modalCategory")
+        .innerText = product.category;
+
+
+    document
+        .getElementById("modalDescription")
+        .innerText = product.description;
+
+
+    document
+        .getElementById("modalPrice")
+        .innerText = product.price;
+
+
+    document
+        .getElementById("productModal")
+        .style.display = "flex";
+
+}
+
+
+
+/* =====================================================
+   CLOSE PRODUCT MODAL
+===================================================== */
+
+function closeModal() {
+
+
+    document
+        .getElementById("productModal")
+        .style.display = "none";
+
+}
+
+
+
+/* =====================================================
+   CLOSE MODAL BY CLICKING OUTSIDE
+===================================================== */
+
+window.onclick = function(event) {
+
+
+    const modal =
+        document.getElementById("productModal");
+
+
+    if (event.target === modal) {
+
+        closeModal();
+
+    }
+
+};
+
+</script>
+
+
+</body>
+
+</html>
